@@ -1,0 +1,11 @@
+python_embeded/
+models/
+output/
+workfolder/
+junk/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+nul
