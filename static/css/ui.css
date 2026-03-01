@@ -1,0 +1,191 @@
+:root {
+  --bg: #f6f8f2;
+  --ink: #18211b;
+  --card: #ffffffdd;
+  --line: #d9e2d5;
+  --accent: #0e8a4c;
+  --accent-2: #185caa;
+  --danger: #b3261e;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+  color: var(--ink);
+  background: radial-gradient(circle at 10% 10%, #eaf4d9 0%, #f6f8f2 40%, #edf3ff 100%);
+}
+
+.bg-shape {
+  position: fixed;
+  z-index: -1;
+  filter: blur(40px);
+  opacity: 0.45;
+}
+
+.bg-a {
+  width: 280px;
+  height: 280px;
+  background: #9ae2b0;
+  top: -80px;
+  right: 5%;
+  border-radius: 42% 58% 61% 39% / 43% 46% 54% 57%;
+}
+
+.bg-b {
+  width: 260px;
+  height: 260px;
+  background: #9cbdf0;
+  bottom: -70px;
+  left: 8%;
+  border-radius: 64% 36% 47% 53% / 37% 63% 39% 61%;
+}
+
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px 32px;
+}
+
+.top h1 {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: 0.3px;
+}
+
+.top p {
+  margin-top: 8px;
+  color: #3b4a40;
+}
+
+.grid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: 0 6px 20px #0000000f;
+}
+
+.card h2 {
+  margin: 0 0 6px;
+  font-size: 1.05rem;
+}
+
+.card p {
+  margin: 0 0 10px;
+  color: #4d5f53;
+  min-height: 38px;
+}
+
+.task-form {
+  display: grid;
+  gap: 8px;
+}
+
+label {
+  display: grid;
+  gap: 4px;
+  font-size: 0.9rem;
+}
+
+input, select, button {
+  font: inherit;
+}
+
+input, select {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: #fff;
+}
+
+button {
+  border: 0;
+  border-radius: 10px;
+  padding: 9px 12px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.jobs, .logs {
+  margin-top: 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.jobs-head, .logs-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.jobs-list {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+  max-height: 240px;
+  overflow: auto;
+}
+
+.job {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.job.active {
+  border-color: #79a7df;
+  box-shadow: 0 0 0 2px #79a7df44 inset;
+}
+
+.meta {
+  font-size: 0.84rem;
+  color: #4b5b50;
+}
+
+.status {
+  font-weight: 700;
+}
+
+.status.running { color: #0b7f45; }
+.status.failed { color: var(--danger); }
+.status.done { color: #1f4f93; }
+.status.stopped { color: #8f6a00; }
+
+#logOutput {
+  margin: 10px 0 0;
+  padding: 10px;
+  border-radius: 10px;
+  background: #101812;
+  color: #d7fbe6;
+  min-height: 220px;
+  max-height: 420px;
+  overflow: auto;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 680px) {
+  .top h1 { font-size: 1.5rem; }
+}
+

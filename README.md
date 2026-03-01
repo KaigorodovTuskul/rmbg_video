@@ -1,4 +1,4 @@
-# RMBG Video Pipeline (Torch / ONNX / TRT)
+# RMBG Video Pipeline (Torch / ONNX / TRT + Flask GUI)
 
 This repository supports three inference backends:
 - Torch
@@ -32,7 +32,30 @@ FFmpeg optional installer:
 install_ffmpeg_optional.bat
 ```
 
-## 2) Environment
+## 2) User-Friendly Flask GUI
+
+Run web UI:
+
+```bat
+run_flask_server.bat
+```
+
+Open:
+
+`http://127.0.0.1:7860`
+
+GUI includes:
+- Base setup
+- Optional TensorRT installer
+- Optional FFmpeg installer
+- HF download + ONNX/TRT conversion
+- Torch launcher
+- ONNX launcher
+- TRT launcher
+
+Each task runs as a background job with logs and stop button.
+
+## 3) Environment
 
 Edit `.env`:
 
@@ -47,7 +70,7 @@ Notes:
 - `HUGGINGFACE_TOKEN` is required for private HF repos.
 - `FFMPEG_PATH/FFPROBE_PATH` are needed for TRT video pipeline.
 
-## 3) Download HF model and convert to ONNX/TRT
+## 4) Download HF model and convert to ONNX/TRT
 
 Interactive launcher:
 
@@ -65,7 +88,7 @@ Artifacts:
 - ONNX: `models/<repo_slug>_<W>x<H>_b<B>_opset17_fp32.onnx`
 - TRT: `models/<repo_slug>_<W>x<H>_b<B>_opset17_mixed.engine`
 
-## 4) Launchers
+## 5) Launchers
 
 Put input files into `workfolder/`, results are saved into `output/`.
 
@@ -87,12 +110,12 @@ TensorRT backend:
 birefnet_trt_launcher.bat
 ```
 
-## 5) Backend Selection
+## 6) Backend Selection
 
 - If user does not have TensorRT/system deps: use `torch_launcher.bat` or `onnx_launcher.bat`.
 - If user needs max speed and has TRT deps: use `birefnet_trt_launcher.bat`.
 
-## 6) Optional Installers Summary
+## 7) Optional Installers Summary
 
 - TensorRT: `install_tensorrt_optional.bat`
 - FFmpeg: `install_ffmpeg_optional.bat`
