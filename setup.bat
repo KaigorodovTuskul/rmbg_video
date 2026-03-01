@@ -9,7 +9,6 @@ set "PIP_ARGS=--no-cache-dir --no-warn-script-location --timeout=1000 --retries 
 set "PYTHON_EXE=python_embeded\python.exe"
 set "PY_EMBED_URL=https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip"
 set "TORCH_INDEX_URL=https://download.pytorch.org/whl/cu130"
-set "NVIDIA_INDEX_URL=https://pypi.nvidia.com"
 
 echo.
 echo ================================
@@ -69,17 +68,11 @@ cd ..
 
 echo.
 echo ================================
-echo Installing PyTorch and TensorRT
+echo Installing PyTorch
 echo ================================
 echo.
 
 %PYTHON_EXE% -I -m pip install torch==2.9.1+cu130 torchvision==0.24.1+cu130 torchaudio==2.9.1+cu130 --index-url %TORCH_INDEX_URL% %PIP_ARGS%
-if errorlevel 1 goto :fail
-
-%PYTHON_EXE% -I -m pip install wheel-stub==0.4.2 --extra-index-url %NVIDIA_INDEX_URL% %PIP_ARGS%
-if errorlevel 1 goto :fail
-
-%PYTHON_EXE% -I -m pip install tensorrt-cu13-bindings==10.13.3.9.post1 tensorrt-cu13-libs==10.13.3.9.post1 tensorrt-cu13==10.13.3.9.post1 --extra-index-url %NVIDIA_INDEX_URL% %PIP_ARGS%
 if errorlevel 1 goto :fail
 
 echo.
@@ -102,7 +95,13 @@ echo Installation Complete
 echo ================================
 echo.
 echo Run:
+echo   torch_launcher.bat
+echo   onnx_launcher.bat
 echo   birefnet_trt_launcher.bat
+echo.
+echo Optional installers:
+echo   install_tensorrt_optional.bat
+echo   install_ffmpeg_optional.bat
 echo.
 pause
 exit /b 0

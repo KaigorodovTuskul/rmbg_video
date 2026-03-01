@@ -1,12 +1,13 @@
-# RMBG TRT Video Pipeline
+# RMBG Video Pipeline (Torch / ONNX / TRT)
 
-This repo is focused on:
-- Downloading segmentation/matting models from Hugging Face (`.safetensors`).
-- Exporting ONNX in FP32 opset17.
-- Building TensorRT mixed-precision engines according to `TRT_MIXED_PRECISION_PLAYBOOK.md`.
-- Running video background pipeline via `birefnet_trt_launcher.bat`.
+This repository supports three inference backends:
+- Torch
+- ONNX
+- TensorRT (optional)
 
-## 1) Setup
+It also includes a fast Hugging Face model downloader + converter pipeline based on `TRT_MIXED_PRECISION_PLAYBOOK.md`.
+
+## 1) Base Setup
 
 Run:
 
@@ -14,11 +15,22 @@ Run:
 setup.bat
 ```
 
-`setup.bat` installs:
-- Embedded Python 3.12.10 (optional reinstall)
+Base setup installs:
+- Embedded Python 3.12.10
 - PyTorch CUDA (`cu130`)
-- TensorRT Python packages (`cu13`)
-- Packages from `requirements.txt`
+- Core Python dependencies from `requirements.txt`
+
+TensorRT is intentionally moved to optional installer:
+
+```bat
+install_tensorrt_optional.bat
+```
+
+FFmpeg optional installer:
+
+```bat
+install_ffmpeg_optional.bat
+```
 
 ## 2) Environment
 
@@ -30,9 +42,12 @@ FFPROBE_PATH=...
 HUGGINGFACE_TOKEN=
 ```
 
-`HUGGINGFACE_TOKEN` is optional for public models, required for private repos or when your account/rate limits require auth.
+Notes:
+- `HUGGINGFACE_TOKEN` is optional for public models.
+- `HUGGINGFACE_TOKEN` is required for private HF repos.
+- `FFMPEG_PATH/FFPROBE_PATH` are needed for TRT video pipeline.
 
-## 3) Download + Convert HF model to ONNX/TRT
+## 3) Download HF model and convert to ONNX/TRT
 
 Interactive launcher:
 
@@ -40,33 +55,46 @@ Interactive launcher:
 download_convert_hf_to_trt.bat
 ```
 
-What it does:
-1. Downloads selected HF model (safetensors + config/code files) with accelerated transfer (`hf_transfer`).
+This pipeline:
+1. Downloads `.safetensors` + config files from Hugging Face (accelerated via `hf_transfer`).
 2. Exports ONNX FP32 opset17.
-3. Builds mixed TensorRT engine (FP16 global + sensitive layers forced FP32) using `convert_birefnet_dynamic_1024_trt_mixed.py`.
+3. Builds TRT mixed engine with FP32 safeguards for sensitive layers.
 
 Artifacts:
-- Downloaded model: `models/hf/<repo_slug>/...`
+- Local HF snapshot: `models/hf/<repo_slug>/...`
 - ONNX: `models/<repo_slug>_<W>x<H>_b<B>_opset17_fp32.onnx`
-- TRT engine: `models/<repo_slug>_<W>x<H>_b<B>_opset17_mixed.engine`
+- TRT: `models/<repo_slug>_<W>x<H>_b<B>_opset17_mixed.engine`
 
-## 4) Run Video Processing
+## 4) Launchers
 
-Put source files into:
+Put input files into `workfolder/`, results are saved into `output/`.
 
-`workfolder/`
+Torch backend:
 
-Run:
+```bat
+torch_launcher.bat
+```
+
+ONNX backend:
+
+```bat
+onnx_launcher.bat
+```
+
+TensorRT backend:
 
 ```bat
 birefnet_trt_launcher.bat
 ```
 
-Output files are written to:
+## 5) Backend Selection
 
-`output/`
+- If user does not have TensorRT/system deps: use `torch_launcher.bat` or `onnx_launcher.bat`.
+- If user needs max speed and has TRT deps: use `birefnet_trt_launcher.bat`.
 
-## Notes
+## 6) Optional Installers Summary
 
-- Current runtime path is full-frame only (split-halves and ROI detector were removed).
-- If TensorRT import fails (`No module named tensorrt`), run `setup.bat` again.
+- TensorRT: `install_tensorrt_optional.bat`
+- FFmpeg: `install_ffmpeg_optional.bat`
+
+These are optional because some users only need Torch/ONNX path.
