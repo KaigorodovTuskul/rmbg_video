@@ -5,6 +5,8 @@ pymediainfo==7.0.1
 python-dotenv==1.2.1
 nvidia-ml-py==13.590.48
 transformers==4.57.6
+huggingface_hub==0.36.1
+hf_transfer==0.1.9
 safetensors==0.7.0
 onnx==1.20.1
 onnxruntime-gpu==1.23.2
